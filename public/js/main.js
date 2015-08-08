@@ -1,38 +1,66 @@
-$(document).ready(function() {
+window.onload = function() {
 
-  $('body').removeClass('no-js');
+    var $menuIcon = document.getElementsByClassName('menu-icon')[0],
+        $offCanva = document.getElementsByClassName('off-canvas')[0];
+        $siteWrap = document.getElementsByClassName('site-wrapper')[0];
 
-  $('a.blog-button').click(function() {
-    if ($('.panel-cover').hasClass('panel-cover--collapsed')) return;
-    currentWidth = $('.panel-cover').width();
-    if (currentWidth < 960) {
-      $('.panel-cover').addClass('panel-cover--collapsed');
-      $('.content-wrapper').addClass('animated slideInRight');
-    } else {
-      $('.panel-cover').css('max-width',currentWidth);
-      $('.panel-cover').animate({'max-width': '530px', 'width': '40%'}, 400, swing = 'swing', function() {} );
+    $menuIcon.addEventListener('click', function() {
+        toggleClass($menuIcon, 'close');
+        toggleClass($offCanva, 'toggled');
+        toggleClass($siteWrap, 'open');
+    }, false);
+
+    $menuIcon.addEventListener('mouseenter', function() {
+        addClass($menuIcon, 'hover');
+    });
+
+    $menuIcon.addEventListener('mouseleave', function() {
+        removeClass($menuIcon, 'hover');
+    });
+
+    function addClass(element, className) {
+        element.className += " " + className;
     }
-  });
 
-  if (window.location.hash && window.location.hash == "#blog") {
-    $('.panel-cover').addClass('panel-cover--collapsed');
-  }
+    function removeClass(element, className) {
+        // Capture any surrounding space characters to prevent repeated
+        // additions and removals from leaving lots of spaces.
+        var classNameRegEx = new RegExp("\\s*" + className + "\\s*");
+        element.className = element.className.replace(classNameRegEx, " ");
+    }
 
-  if (window.location.pathname.substring(0, 5) == "/tag/") {
-    $('.panel-cover').addClass('panel-cover--collapsed');
-  }
+    function toggleClass(element, className) {
+        if (!element || !className) {
+            return;
+        }
 
-  $('.btn-mobile-menu').click(function() {
-    $('.navigation-wrapper').toggleClass('visible animated bounceInDown');
-    $('.btn-mobile-menu__icon').toggleClass('hidden');
-    $('.btn-mobile-close__icon').toggleClass('hidden');
-  });
+        if (element.className.indexOf(className) === -1) {
+            addClass(element, className);
+        } else {
+            removeClass(element, className);
+        }
+    }
 
-  $('.navigation-wrapper .blog-button').click(function() {
-    $('.navigation-wrapper').toggleClass('visible');
-    $('.btn-mobile-menu__icon').toggleClass('hidden');
-    $('.btn-mobile-close__icon').toggleClass('hidden');
-  });
-});
+    // Open Twitter/share in a Pop-Up
+    var $popup = document.getElementsByClassName('popup')[0];
+    if (!$popup) {
+        return;
+    }
+    $popup.addEventListener('click', function(e) {
+        e.preventDefault()
+        var width  = 575,
+            height = 400,
+            left   = (document.documentElement.clientWidth  - width)  / 2,
+            top    = (document.documentElement.clientHeight - height) / 2,
+            url    = this.href,
+            opts   = 'status=1' +
+                     ',width='  + width  +
+                     ',height=' + height +
+                     ',top='    + top    +
+                     ',left='   + left;
 
+        window.open(url, 'twitter', opts);
 
+        return false;
+    });
+}

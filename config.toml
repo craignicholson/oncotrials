@@ -1,4 +1,4 @@
 baseurl = "http://oncotrials.io/"
 languageCode = "en-us"
 title = "Oncology Trials - UTSW"
-theme = "hugo-uno"
+theme = "journal"
